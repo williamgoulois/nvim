@@ -16,6 +16,7 @@ return {
         filter = "F",
       },
       preview = {
+        win_height = 35,
         auto_preview = true,
         show_title = true,
         delay_syntax = 50,
