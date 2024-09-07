@@ -4,12 +4,24 @@ return {
     {
       "supermaven-inc/supermaven-nvim",
       config = function()
-        require("supermaven-nvim").setup({})
+        require("supermaven-nvim").setup({
+          disable_inline_completion = true,
+          keymaps = {
+            accept_suggestion = "<tab>",
+            clear_suggestion = "<A-c>",
+            accept_word = "<A-w>",
+          },
+          log_level = "off",
+        })
       end,
     },
     {
       "onsails/lspkind.nvim",
     },
+  },
+  keys = {
+    { "<tab>", false, mode = { "i", "s" } },
+    { "<s-tab>", false, mode = { "i", "s" } },
   },
   ---@param opts cmp.ConfigSchema
   opts = function(_, opts)
