@@ -71,6 +71,12 @@ return {
         desc = "Ask with selection",
         mode = { "v", "n" },
       },
+      {
+        "<leader>ad",
+        "<cmd>AiderSend /drop %<CR>",
+        desc = "Drop current file from aider",
+        mode = "n",
+      },
     },
   },
 }
