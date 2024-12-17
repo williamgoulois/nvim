@@ -73,7 +73,10 @@ return {
       },
       {
         "<leader>ad",
-        "<cmd>AiderDrop<CR>",
+        function()
+          local current_file = vim.fn.expand('%:p')
+          vim.cmd('AiderSend /drop ' .. current_file)
+        end,
         desc = "Drop current file from aider",
         mode = "n",
       },
