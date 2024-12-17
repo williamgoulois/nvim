@@ -73,7 +73,7 @@ return {
       },
       {
         "<leader>ad",
-        "<cmd>AiderSend /drop %<CR>",
+        "<cmd>AiderDrop<CR>",
         desc = "Drop current file from aider",
         mode = "n",
       },
