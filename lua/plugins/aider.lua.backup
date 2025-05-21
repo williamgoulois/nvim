@@ -19,6 +19,11 @@ return {
     },
     lazy = false,
     opts = {
+      watch_files = true,
+      spawn_on_startup = true,
+      focus_on_spawn = false,
+      auto_insert = false,
+      aider_args = "--input-history-file '.aider.history/$branch-$timestamp.input.md' --chat-history-file '.aider.history/$branch-$timestamp.chat.md' --no-auto-commit",
       -- Auto trigger diffview after Aider's file changes
       after_update_hook = function()
         require("diffview").open({ "HEAD^" })
@@ -74,8 +79,8 @@ return {
       {
         "<leader>ad",
         function()
-          local current_file = vim.fn.expand('%:p')
-          vim.cmd('AiderSend /drop ' .. current_file)
+          local current_file = vim.fn.expand("%:p")
+          vim.cmd("AiderSend /drop " .. current_file)
         end,
         desc = "Drop current file from aider",
         mode = "n",

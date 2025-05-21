@@ -4,7 +4,7 @@
 
 local map = vim.keymap.set
 
-map("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" })
+-- map("n", "<leader>sx", require("telescope.builtin").resume, { noremap = true, silent = true, desc = "Resume" })
 
 -- vim-tmux-navigator
 if os.getenv("TMUX") then
