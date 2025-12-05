@@ -1,41 +1,40 @@
 return {
-  "mfussenegger/nvim-lint",
-  opts = {
-    linters_by_ft = {
-      javascript = { "eslint_d" },
-      javascriptreact = { "eslint_d" },
-      typescript = { "eslint_d" },
-      typescriptreact = { "eslint_d" },
-      vue = { "eslint_d" },
-      -- Use the "*" filetype to run linters on all filetypes.
-      -- ['*'] = { 'global linter' },
-      -- Use the "_" filetype to run linters on filetypes that don't have other linters configured.
-      -- ['_'] = { 'fallback linter' },
-      -- ["*"] = { "typos" },
-    },
-    -- LazyVim extension to easily override linter options
-    -- or add custom linters.
-    ---@type table<string,table>
-    linters = {
-      eslint_d = {
-        args = {
-          "--format",
-          "json",
-          "--stdin",
-          "--stdin-filename",
-          function()
-            return vim.api.nvim_buf_get_name(0)
-          end,
-        },
-      },
-      sqlfluff = {
-        args = {
-          "lint",
-          "--format=json",
-          -- note: users will have to replace the --dialect argument accordingly
-          "--dialect=postgres",
-        },
+  {
+    "mfussenegger/nvim-lint",
+    opts = {
+      linters_by_ft = {
+        javascript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
+        typescript = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
+        vue = { "eslint_d" },
       },
     },
+    init = function()
+      -- Wrap try_lint to pass cwd for eslint_d (ESLint v9 flat config support)
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyLoad",
+        callback = function(event)
+          if event.data == "nvim-lint" then
+            local lint = require("lint")
+            local original_try_lint = lint.try_lint
+
+            lint.try_lint = function(names, opts)
+              opts = opts or {}
+              if not opts.cwd then
+                local linters = names or lint._resolve_linter_by_ft(vim.bo.filetype)
+                for _, name in ipairs(type(linters) == "table" and linters or { linters }) do
+                  if name == "eslint_d" or name == "eslint" then
+                    opts.cwd = vim.fs.root(0, { "eslint.config.js", "eslint.config.mjs", "eslint.config.cjs" })
+                    break
+                  end
+                end
+              end
+              return original_try_lint(names, opts)
+            end
+          end
+        end,
+      })
+    end,
   },
 }

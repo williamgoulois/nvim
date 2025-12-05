@@ -18,4 +18,22 @@ function M.maximize_current_split()
   end
 end
 
+-- Folder grep function
+-- Allows selecting a folder and running grep in it
+function M.folder_grep()
+  local fzf = require("fzf-lua")
+
+  fzf.fzf_exec("fd . --type d", {
+    prompt = "Folder: ",
+    actions = {
+      ["default"] = function(selected)
+        if selected and #selected > 0 then
+          -- respect .gitignore
+          fzf.live_grep({ cwd = selected[1] })
+        end
+      end,
+    },
+  })
+end
+
 return M

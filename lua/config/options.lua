@@ -15,3 +15,10 @@ vim.g.lazyvim_eslint_auto_format = false
 
 -- Disable all animations
 vim.g.snacks_animate = false
+vim.diagnostic.config({
+  virtual_text = {
+    suffix = function(diag)
+      return require("rulebook").hasDocs(diag) and "  " or ""
+    end,
+  },
+})
